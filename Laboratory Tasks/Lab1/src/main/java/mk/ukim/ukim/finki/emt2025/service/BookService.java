@@ -14,4 +14,5 @@ public interface BookService {
     Optional<Book> update(Long id,BookDto book);
     void deleteById(Long id);
     Optional<Book> markAsRented(Long id,BookDto book);
+    List<Book> search(String name,Long authorId,Category category);
 }

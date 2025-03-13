@@ -89,7 +89,25 @@ public class BookServiceImpl implements BookService {
                 });
     }
 
+    @Override
+    public List<Book> search(String name, Long authorId, Category category) {
+//        if (name != null && authorId == null && category == null)
+//            return bookRepository.findByNameContainingIgnoreCase(name);
+//
+//        if (name == null && authorId != null && category == null)
+//            return bookRepository.findByAuthorId(authorId);
+//
+//        if (name == null && authorId == null && category != null)
+//            return bookRepository.findByCategory(category);
+        //TODO: make custom @Query for using those methods in repository
 
+        List<Book> books = bookRepository.findAll();
 
+        return books.stream()
+                .filter(book -> name == null || book.getName().toLowerCase().contains(name.toLowerCase()))
+                .filter(book -> authorId == null || book.getAuthor().getId().equals(authorId))
+                .filter(book -> category == null || book.getCategory().equals(category))
+                .collect(Collectors.toList());
+    }
 
 }

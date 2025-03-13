@@ -60,6 +60,13 @@ public class BookController {
                 .map(ResponseEntity::ok)
                 .orElseGet(()->ResponseEntity.notFound().build());
     }
-
+    @GetMapping("/search")
+    public List<Book> searchBooks(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long authorId,
+            @RequestParam(required = false) Category category
+    ) {
+        return bookService.search(name, authorId, category);
+    }
 
 }

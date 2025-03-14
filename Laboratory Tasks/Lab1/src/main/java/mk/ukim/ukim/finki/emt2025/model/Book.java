@@ -1,9 +1,11 @@
 package mk.ukim.ukim.finki.emt2025.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -16,32 +18,16 @@ public class Book {
     private Category category;
     @ManyToOne
     private Author author;
-    private Integer availableCopies;
+    @OneToMany(mappedBy = "book")
+    private List<BookCopy> bookCopies;
 
     public Book() {
     }
 
-    public Book(String name, Category category, Author author, Integer availableCopies) {
+    public Book(String name, Category category, Author author) {
         this.name = name;
         this.category = category;
         this.author = author;
-        this.availableCopies = availableCopies;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-    public Integer getAvailableCopies() {
-        return availableCopies;
     }
 
     public void setName(String name) {
@@ -56,7 +42,31 @@ public class Book {
         this.author = author;
     }
 
-    public void setAvailableCopies(Integer availableCopies) {
-        this.availableCopies = availableCopies;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public List<BookCopy> getBookCopies() {
+        return bookCopies;
+    }
+
+    public void setBookCopies(List<BookCopy> bookCopies) {
+        this.bookCopies = bookCopies;
     }
 }

@@ -8,12 +8,10 @@ public class BookDto {
     private String name;
     private Category category;
     private Long author;
-    private Integer availableCopies;
 
-    public BookDto(String name, Category category, Long author, Integer availableCopies) {
+    public BookDto(String name, Category category, Long author) {
         this.name = name;
         this.category = category;
-        this.availableCopies = availableCopies;
         this.author = author;
     }
 
@@ -28,10 +26,6 @@ public class BookDto {
         return category;
     }
 
-    public Integer getAvailableCopies() {
-        return availableCopies;
-    }
-
     public Long getAuthor() {
         return author;
     }
@@ -42,10 +36,6 @@ public class BookDto {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public void setAvailableCopies(Integer availableCopies) {
-        this.availableCopies = availableCopies;
     }
 
     public void setAuthor(Long author) {

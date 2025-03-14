@@ -1,6 +1,5 @@
 package mk.ukim.ukim.finki.emt2025.service.impl;
 
-import mk.ukim.ukim.finki.emt2025.model.Author;
 import mk.ukim.ukim.finki.emt2025.model.Book;
 import mk.ukim.ukim.finki.emt2025.model.Category;
 import mk.ukim.ukim.finki.emt2025.model.dto.BookDto;
@@ -37,16 +36,13 @@ public class BookServiceImpl implements BookService {
     public Optional<Book> save(BookDto book) {
         if (book.getName()!= null &&
                 authorService.findById(book.getAuthor()).isPresent()
-                && book.getCategory()!=null &&
-                book.getAvailableCopies() != null
-        ) {
+                && book.getCategory()!=null) {
             return Optional.of(
                     bookRepository.save(
                             new Book(
                                     book.getName(),
                                     book.getCategory(),
-                                    authorService.findById(book.getAuthor()).get(),
-                                    book.getAvailableCopies()
+                                    authorService.findById(book.getAuthor()).get()
                                     )));
         }
         return Optional.empty();
@@ -63,9 +59,6 @@ public class BookServiceImpl implements BookService {
                     if (book.getCategory() != null) {
                         existingBook.setCategory(book.getCategory());
                     }
-                    if (book.getAvailableCopies() != null) {
-                        existingBook.setAvailableCopies(book.getAvailableCopies());
-                    }
                     if (book.getAuthor() != null && authorService.findById(book.getAuthor()).isPresent()) {
                         existingBook.setAuthor(authorService.findById(book.getAuthor()).get());
                     }
@@ -78,16 +71,16 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
-    @Override
-    public Optional<Book> markAsRented(Long id,BookDto book) {
-        return bookRepository.findById(id)
-                .map(existingBook ->{
-                    if(book.getAvailableCopies()>0){
-                        existingBook.setAvailableCopies(existingBook.getAvailableCopies()-1);
-                    }
-                    return bookRepository.save(existingBook);
-                });
-    }
+//    @Override
+//    public Optional<Book> markAsRented(Long id,BookDto book) {
+//        return bookRepository.findById(id)
+//                .map(existingBook ->{
+//                    if(book.getAvailableCopies()>0){
+//                        existingBook.setAvailableCopies(existingBook.getAvailableCopies()-1);
+//                    }
+//                    return bookRepository.save(existingBook);
+//                });
+//    }
 
     @Override
     public List<Book> search(String name, Long authorId, Category category) {

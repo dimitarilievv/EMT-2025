@@ -66,4 +66,21 @@ public class AccommodationServiceImpl implements AccommodationService {
                 .orElseThrow(()->new RuntimeException("Accommodation not found with id"+id));
         accommodationRepository.delete(accommodation);
     }
+
+//    @Override
+//    public Optional<Accommodation> rentRoom(Long id, AccommodationDto accommodationDto) {
+//        return accommodationRepository.findById(id).map(existingAccommodation->{
+//            if(accommodationDto.getNumRooms()>0)
+//                existingAccommodation.setNumRooms(existingAccommodation.getNumRooms()-1);
+//            return accommodationRepository.save(existingAccommodation);
+//        });
+//    }
+    @Override
+    public Optional<Accommodation> rentRoom(Long id) {
+        return accommodationRepository.findById(id).map(existingAccommodation->{
+            if(existingAccommodation.getNumRooms()>0)
+                existingAccommodation.setNumRooms(existingAccommodation.getNumRooms()-1);
+            return accommodationRepository.save(existingAccommodation);
+        });
+    }
 }

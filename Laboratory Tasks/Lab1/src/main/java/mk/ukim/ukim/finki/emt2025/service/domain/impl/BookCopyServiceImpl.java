@@ -1,11 +1,11 @@
-package mk.ukim.ukim.finki.emt2025.service.impl;
+package mk.ukim.ukim.finki.emt2025.service.domain.impl;
 
-import mk.ukim.ukim.finki.emt2025.model.Book;
-import mk.ukim.ukim.finki.emt2025.model.BookCopy;
-import mk.ukim.ukim.finki.emt2025.model.Condition;
+import mk.ukim.ukim.finki.emt2025.model.domain.Book;
+import mk.ukim.ukim.finki.emt2025.model.domain.BookCopy;
+import mk.ukim.ukim.finki.emt2025.model.enumerations.Condition;
 import mk.ukim.ukim.finki.emt2025.repository.BookCopyRepository;
-import mk.ukim.ukim.finki.emt2025.service.BookCopyService;
-import mk.ukim.ukim.finki.emt2025.service.BookService;
+import mk.ukim.ukim.finki.emt2025.service.domain.BookCopyService;
+import mk.ukim.ukim.finki.emt2025.service.domain.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,10 +23,11 @@ public class BookCopyServiceImpl implements BookCopyService {
     }
 
     @Override
-    public Optional<Book> createCopy(Long id) {
+    public Optional<BookCopy> createCopy(Long id) {
         Book book=bookService.findById(id).get();
-        bookCopyRepository.save(new BookCopy(book));
-        return Optional.of(book);
+        BookCopy bookCopy=new BookCopy(book);
+        bookCopyRepository.save(bookCopy);
+        return Optional.of(bookCopy);
     }
 
     @Override
@@ -49,11 +50,11 @@ public class BookCopyServiceImpl implements BookCopyService {
     }
 
     @Override
-    public Optional<Book> rent(Long id) {
+    public Optional<BookCopy> rent(Long id) {
         BookCopy bookCopy=bookCopyRepository.findById(id).get();
         bookCopy.setIsRented(true);
         bookCopyRepository.save(bookCopy);
-        return Optional.of(bookCopy.getBook());
+        return Optional.of(bookCopy);
     }
 
     @Override

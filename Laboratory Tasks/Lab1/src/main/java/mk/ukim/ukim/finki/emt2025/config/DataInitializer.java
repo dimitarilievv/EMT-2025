@@ -1,14 +1,14 @@
 package mk.ukim.ukim.finki.emt2025.config;
 
 import jakarta.annotation.PostConstruct;
-import mk.ukim.ukim.finki.emt2025.model.*;
+import mk.ukim.ukim.finki.emt2025.model.domain.Author;
+import mk.ukim.ukim.finki.emt2025.model.domain.Book;
+import mk.ukim.ukim.finki.emt2025.model.domain.Country;
+import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
 import mk.ukim.ukim.finki.emt2025.repository.AuthorRepository;
-import mk.ukim.ukim.finki.emt2025.repository.BookCopyRepository;
 import mk.ukim.ukim.finki.emt2025.repository.BookRepository;
 import mk.ukim.ukim.finki.emt2025.repository.CountryRepository;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 
 @Component
 public class DataInitializer {

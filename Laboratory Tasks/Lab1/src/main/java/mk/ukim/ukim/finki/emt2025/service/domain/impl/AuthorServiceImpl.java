@@ -1,10 +1,9 @@
-package mk.ukim.ukim.finki.emt2025.service.impl;
+package mk.ukim.ukim.finki.emt2025.service.domain.impl;
 
-import mk.ukim.ukim.finki.emt2025.model.Author;
-import mk.ukim.ukim.finki.emt2025.model.dto.AuthorDto;
+import mk.ukim.ukim.finki.emt2025.model.domain.Author;
 import mk.ukim.ukim.finki.emt2025.repository.AuthorRepository;
 import mk.ukim.ukim.finki.emt2025.repository.CountryRepository;
-import mk.ukim.ukim.finki.emt2025.service.AuthorService;
+import mk.ukim.ukim.finki.emt2025.service.domain.AuthorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,17 +26,17 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.findAll();
     }
     @Override
-    public Optional<Author> save(AuthorDto author) {
+    public Optional<Author> save(Author author) {
         if (author.getName() != null && author.getSurname() != null
-                && countryRepository.findById(author.getCountry()).isPresent()) {
+                && countryRepository.findById(author.getCountry().getId()).isPresent()) {
             return Optional.of(authorRepository.save(new Author(author.getName(), author.getSurname(),
-                    countryRepository.findById(author.getCountry()).get())));
+                    countryRepository.findById(author.getCountry().getId()).get())));
         }
         return Optional.empty();
     }
 
     @Override
-    public Optional<Author> update(Long id, AuthorDto author) {
+    public Optional<Author> update(Long id, Author author) {
         return authorRepository.findById(id).map(existingAuthor-> {
             if (author.getName() != null) {
                 existingAuthor.setName(author.getName());
@@ -45,8 +44,8 @@ public class AuthorServiceImpl implements AuthorService {
             if (author.getSurname() != null) {
                 existingAuthor.setSurname(author.getSurname());
             }
-            if (author.getCountry() != null && countryRepository.findById(author.getCountry()).isPresent()) {
-                existingAuthor.setCountry(countryRepository.findById(author.getCountry()).get());
+            if (author.getCountry() != null && countryRepository.findById(author.getCountry().getId()).isPresent()) {
+                existingAuthor.setCountry(countryRepository.findById(author.getCountry().getId()).get());
             }
             return authorRepository.save(existingAuthor);
         });

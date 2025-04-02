@@ -1,4 +1,4 @@
-package mk.ukim.ukim.finki.emt2025.model;
+package mk.ukim.ukim.finki.emt2025.model.enumerations;
 
 public enum Category {
     NOVEL,

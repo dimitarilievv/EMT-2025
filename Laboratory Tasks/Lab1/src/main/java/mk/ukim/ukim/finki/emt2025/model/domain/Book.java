@@ -1,10 +1,9 @@
-package mk.ukim.ukim.finki.emt2025.model;
+package mk.ukim.ukim.finki.emt2025.model.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
+import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

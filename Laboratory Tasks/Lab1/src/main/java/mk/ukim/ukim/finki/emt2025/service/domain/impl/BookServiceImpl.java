@@ -1,11 +1,10 @@
-package mk.ukim.ukim.finki.emt2025.service.impl;
+package mk.ukim.ukim.finki.emt2025.service.domain.impl;
 
-import mk.ukim.ukim.finki.emt2025.model.Book;
-import mk.ukim.ukim.finki.emt2025.model.Category;
-import mk.ukim.ukim.finki.emt2025.model.dto.BookDto;
+import mk.ukim.ukim.finki.emt2025.model.domain.Book;
+import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
 import mk.ukim.ukim.finki.emt2025.repository.BookRepository;
-import mk.ukim.ukim.finki.emt2025.service.AuthorService;
-import mk.ukim.ukim.finki.emt2025.service.BookService;
+import mk.ukim.ukim.finki.emt2025.service.domain.AuthorService;
+import mk.ukim.ukim.finki.emt2025.service.domain.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,16 +32,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> save(BookDto book) {
+    public Optional<Book> save(Book book) {
         if (book.getName()!= null &&
-                authorService.findById(book.getAuthor()).isPresent()
+                authorService.findById(book.getAuthor().getId()).isPresent()
                 && book.getCategory()!=null) {
             return Optional.of(
                     bookRepository.save(
                             new Book(
                                     book.getName(),
                                     book.getCategory(),
-                                    authorService.findById(book.getAuthor()).get()
+                                    authorService.findById(book.getAuthor().getId()).get()
                                     )));
         }
         return Optional.empty();
@@ -50,7 +49,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> update(Long id, BookDto book) {
+    public Optional<Book> update(Long id, Book book) {
         return bookRepository.findById(id)
                 .map(existingBook -> {
                     if (book.getName() != null) {
@@ -59,8 +58,8 @@ public class BookServiceImpl implements BookService {
                     if (book.getCategory() != null) {
                         existingBook.setCategory(book.getCategory());
                     }
-                    if (book.getAuthor() != null && authorService.findById(book.getAuthor()).isPresent()) {
-                        existingBook.setAuthor(authorService.findById(book.getAuthor()).get());
+                    if (book.getAuthor() != null && authorService.findById(book.getAuthor().getId()).isPresent()) {
+                        existingBook.setAuthor(authorService.findById(book.getAuthor().getId()).get());
                     }
                     return bookRepository.save(existingBook);
                 });

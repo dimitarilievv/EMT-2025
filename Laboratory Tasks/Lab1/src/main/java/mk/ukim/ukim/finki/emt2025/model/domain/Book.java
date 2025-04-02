@@ -17,8 +17,8 @@ public class Book {
     private Category category;
     @ManyToOne
     private Author author;
-    @OneToMany(mappedBy = "book")
-    private List<BookCopy> bookCopies;
+//    @OneToMany(mappedBy = "book")
+//    private List<BookCopy> bookCopies;
 
     public Book() {
     }
@@ -59,13 +59,5 @@ public class Book {
 
     public Author getAuthor() {
         return author;
-    }
-
-    public List<BookCopy> getBookCopies() {
-        return bookCopies;
-    }
-
-    public void setBookCopies(List<BookCopy> bookCopies) {
-        this.bookCopies = bookCopies;
     }
 }

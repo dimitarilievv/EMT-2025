@@ -1,10 +1,10 @@
 package mk.ukim.ukim.finki.emt2025.service.application;
 
 
-import mk.ukim.ukim.finki.emt2025.dto.CreateUserDto;
-import mk.ukim.ukim.finki.emt2025.dto.DisplayUserDto;
-import mk.ukim.ukim.finki.emt2025.dto.LoginUserDto;
+import mk.ukim.ukim.finki.emt2025.dto.*;
+import mk.ukim.ukim.finki.emt2025.model.domain.BookCopy;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserApplicationService {
@@ -13,4 +13,7 @@ public interface UserApplicationService {
     Optional<DisplayUserDto> login(LoginUserDto loginUserDto);
 
     Optional<DisplayUserDto> findByUsername(String username);
+    List<DisplayBookDto> addBookToWishlist(String username, Long bookId);
+    List<DisplayBookDto> getUserWishList(String username);
+    List<DisplayBookCopyDto> rentAllCopiesFromWishList(String username);
 }

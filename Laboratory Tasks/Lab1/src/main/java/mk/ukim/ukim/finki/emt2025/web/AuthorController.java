@@ -6,6 +6,7 @@ import mk.ukim.ukim.finki.emt2025.dto.CreateAuthorDto;
 import mk.ukim.ukim.finki.emt2025.dto.DisplayAuthorDto;
 import mk.ukim.ukim.finki.emt2025.service.application.AuthorApplicationService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class AuthorController {
             description = "Creates a new author based on the given AuthorDto."
     )
     @PostMapping("/add")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<DisplayAuthorDto> save(@RequestBody CreateAuthorDto createAuthorDto) {
         return authorApplicationService.save(createAuthorDto)
                 .map(ResponseEntity::ok)
@@ -48,6 +50,7 @@ public class AuthorController {
             summary = "Update an existing author", description = "Updates a author by ID using AuthorDto."
     )
     @PutMapping("/edit/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<DisplayAuthorDto> update(@PathVariable Long id, @RequestBody CreateAuthorDto createAuthorDto) {
         return authorApplicationService.update(id, createAuthorDto)
                 .map(ResponseEntity::ok)
@@ -56,6 +59,7 @@ public class AuthorController {
 
     @Operation(summary = "Delete a author", description = "Deletes a author by its ID.")
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         if (authorApplicationService.findById(id).isPresent()) {
             authorApplicationService.deleteById(id);

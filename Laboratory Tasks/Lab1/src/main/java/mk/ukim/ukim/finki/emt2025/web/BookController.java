@@ -10,6 +10,7 @@ import mk.ukim.ukim.finki.emt2025.dto.DisplayBookDto;
 import mk.ukim.ukim.finki.emt2025.service.application.BookApplicationService;
 import mk.ukim.ukim.finki.emt2025.service.application.BookCopyApplicationService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class BookController {
             description = "Creates a new book based on the given BookDto."
     )
     @PostMapping("/add")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<DisplayBookDto> save(@RequestBody CreateBookDto createBookDto) {
         return bookApplicationService.save(createBookDto)
                 .map(ResponseEntity::ok)
@@ -55,6 +57,7 @@ public class BookController {
             summary = "Update an existing book", description = "Updates a product by ID using BookDto."
     )
     @PutMapping("/edit/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<DisplayBookDto> update(@PathVariable Long id, @RequestBody CreateBookDto createBookDto) {
         return bookApplicationService.update(id, createBookDto)
                 .map(ResponseEntity::ok)
@@ -63,6 +66,7 @@ public class BookController {
 
     @Operation(summary = "Delete a book", description = "Deletes a book by its ID.")
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (bookApplicationService.findById(id).isPresent()) {
             bookApplicationService.deleteById(id);
@@ -81,6 +85,7 @@ public class BookController {
 
     @Operation(summary = "Creates a copy", description = "Creates a copy by its ID.")
     @PostMapping("/createCopy/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<DisplayBookCopyDto> createCopy(@PathVariable Long id) {
         return bookCopyApplicationService.createCopy(id)
                 .map(ResponseEntity::ok)
@@ -94,6 +99,7 @@ public class BookController {
     }
     @Operation(summary = "Change condition on book copy by id", description = "Change condition on book copy")
     @PatchMapping ("/bookCopies/changeCondition/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<DisplayBookCopyDto> changeCondition(@PathVariable Long id,@RequestParam Condition condition) {
         return this.bookCopyApplicationService.changeCondition(id,condition)
                 .map(ResponseEntity::ok)

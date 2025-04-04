@@ -1,6 +1,7 @@
 package mk.ukim.ukim.finki.emt2025.service.domain.impl;
 
 import mk.ukim.ukim.finki.emt2025.model.domain.Book;
+import mk.ukim.ukim.finki.emt2025.model.domain.BookHistory;
 import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
 import mk.ukim.ukim.finki.emt2025.repository.BookRepository;
 import mk.ukim.ukim.finki.emt2025.service.domain.AuthorService;
@@ -36,13 +37,15 @@ public class BookServiceImpl implements BookService {
         if (book.getName()!= null &&
                 authorService.findById(book.getAuthor().getId()).isPresent()
                 && book.getCategory()!=null) {
-            return Optional.of(
-                    bookRepository.save(
-                            new Book(
-                                    book.getName(),
-                                    book.getCategory(),
-                                    authorService.findById(book.getAuthor().getId()).get()
-                                    )));
+
+            Book newBook = new Book(
+                    book.getName(),
+                    book.getCategory(),
+                    authorService.findById(book.getAuthor().getId()).get()
+            );
+
+            newBook.getBookHistory().add(new BookHistory(book.getName(), book.getCategory(), book.getAuthor()));
+            return Optional.of(bookRepository.save(newBook));
         }
         return Optional.empty();
 
@@ -52,6 +55,7 @@ public class BookServiceImpl implements BookService {
     public Optional<Book> update(Long id, Book book) {
         return bookRepository.findById(id)
                 .map(existingBook -> {
+                    existingBook.getBookHistory().add(new BookHistory(book.getName(),book.getCategory(),book.getAuthor()));
                     if (book.getName() != null) {
                         existingBook.setName(book.getName());
                     }
@@ -100,6 +104,11 @@ public class BookServiceImpl implements BookService {
                 .filter(book -> authorId == null || book.getAuthor().getId().equals(authorId))
                 .filter(book -> category == null || book.getCategory().equals(category))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookHistory> findAllVersions(Long id) {
+        return bookRepository.findById(id).get().getBookHistory();
     }
 
 }

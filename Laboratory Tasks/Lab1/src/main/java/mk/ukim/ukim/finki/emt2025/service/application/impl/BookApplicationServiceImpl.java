@@ -2,6 +2,7 @@ package mk.ukim.ukim.finki.emt2025.service.application.impl;
 
 import mk.ukim.ukim.finki.emt2025.dto.CreateBookDto;
 import mk.ukim.ukim.finki.emt2025.dto.DisplayBookDto;
+import mk.ukim.ukim.finki.emt2025.dto.DisplayBookHistoryDto;
 import mk.ukim.ukim.finki.emt2025.model.domain.Book;
 import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
 import mk.ukim.ukim.finki.emt2025.service.application.BookApplicationService;
@@ -81,6 +82,14 @@ public class BookApplicationServiceImpl implements BookApplicationService {
                 .filter(book -> authorId == null || book.getAuthor().getId().equals(authorId))
                 .filter(book -> category == null || book.getCategory().equals(category))
                 .map(DisplayBookDto::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DisplayBookHistoryDto> findAllVersions(Long id) {
+        return bookService.findAllVersions(id)
+                .stream()
+                .map(DisplayBookHistoryDto::from)
                 .collect(Collectors.toList());
     }
 }

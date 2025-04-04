@@ -1,6 +1,7 @@
 package mk.ukim.ukim.finki.emt2025.service.domain;
 
 import mk.ukim.ukim.finki.emt2025.model.domain.Book;
+import mk.ukim.ukim.finki.emt2025.model.domain.BookHistory;
 import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface BookService {
     void deleteById(Long id);
 //    Optional<Book> markAsRented(Long id,BookDto book);
     List<Book> search(String name,Long authorId,Category category);
+    List<BookHistory> findAllVersions(Long id);
 }

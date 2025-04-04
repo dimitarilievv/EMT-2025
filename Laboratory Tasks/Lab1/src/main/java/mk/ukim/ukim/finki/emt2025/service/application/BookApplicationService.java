@@ -2,6 +2,8 @@ package mk.ukim.ukim.finki.emt2025.service.application;
 
 import mk.ukim.ukim.finki.emt2025.dto.CreateBookDto;
 import mk.ukim.ukim.finki.emt2025.dto.DisplayBookDto;
+import mk.ukim.ukim.finki.emt2025.dto.DisplayBookHistoryDto;
+import mk.ukim.ukim.finki.emt2025.model.domain.Book;
 import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
 
 import java.util.List;
@@ -14,4 +16,5 @@ public interface BookApplicationService {
     Optional<DisplayBookDto> update(Long id,CreateBookDto book);
     void deleteById(Long id);
     List<DisplayBookDto> search(String name, Long authorId, Category category);
+    List<DisplayBookHistoryDto> findAllVersions(Long id);
 }

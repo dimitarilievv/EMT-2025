@@ -2,6 +2,8 @@ package mk.ukim.ukim.finki.emt2025.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import mk.ukim.ukim.finki.emt2025.dto.DisplayBookHistoryDto;
+import mk.ukim.ukim.finki.emt2025.model.domain.Book;
 import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
 import mk.ukim.ukim.finki.emt2025.model.enumerations.Condition;
 import mk.ukim.ukim.finki.emt2025.dto.CreateBookDto;
@@ -113,6 +115,11 @@ public class BookController {
             @RequestParam(required = false) Category category
     ) {
         return bookApplicationService.search(name, authorId, category);
+    }
+    @Operation(summary = "List of versions", description = "Shows a list of the versions of books")
+    @GetMapping("/versions/{id}")
+    public List<DisplayBookHistoryDto> getAllVersions(@PathVariable Long id) {
+       return this.bookApplicationService.findAllVersions(id);
     }
 
 }

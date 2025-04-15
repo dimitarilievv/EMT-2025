@@ -1,7 +1,7 @@
 package mk.ukim.finki.lab1b.web;
 
-import mk.ukim.finki.lab1b.model.Country;
-import mk.ukim.finki.lab1b.service.CountryService;
+import mk.ukim.finki.lab1b.model.domain.Country;
+import mk.ukim.finki.lab1b.service.domain.CountryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,10 +1,9 @@
-package mk.ukim.finki.lab1b.service.impl;
+package mk.ukim.finki.lab1b.service.domain.impl;
 
-import mk.ukim.finki.lab1b.model.Accommodation;
-import mk.ukim.finki.lab1b.model.dto.AccommodationDto;
+import mk.ukim.finki.lab1b.model.domain.Accommodation;
 import mk.ukim.finki.lab1b.repository.AccommodationRepository;
-import mk.ukim.finki.lab1b.service.AccommodationService;
-import mk.ukim.finki.lab1b.service.HostService;
+import mk.ukim.finki.lab1b.service.domain.AccommodationService;
+import mk.ukim.finki.lab1b.service.domain.HostService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,31 +30,31 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    public Optional<Accommodation> save(AccommodationDto accommodationDto) {
-        if(accommodationDto.getName()!=null && accommodationDto.getCategory()!=null
-        && accommodationDto.getNumRooms()!=null &&
-                hostService.findById(accommodationDto.getHost()).isPresent()){
+    public Optional<Accommodation> save(Accommodation accommodation) {
+        if(accommodation.getName()!=null && accommodation.getCategory()!=null
+        && accommodation.getNumRooms()!=null &&
+                hostService.findById(accommodation.getHost().getId()).isPresent()){
             return Optional.of(accommodationRepository.save(new Accommodation(
-                    accommodationDto.getName(),
-                    accommodationDto.getCategory(),
-                    hostService.findById(accommodationDto.getHost()).get(),
-                    accommodationDto.getNumRooms()
+                    accommodation.getName(),
+                    accommodation.getCategory(),
+                    hostService.findById(accommodation.getHost().getId()).get(),
+                    accommodation.getNumRooms()
             )));
         }
         return Optional.empty();
     }
 
     @Override
-    public Optional<Accommodation> update(Long id, AccommodationDto accommodationDto) {
+    public Optional<Accommodation> update(Long id, Accommodation accommodation) {
         return accommodationRepository.findById(id).map(existingAccommodation->{
-           if(accommodationDto.getName()!=null)
-               existingAccommodation.setName(accommodationDto.getName());
-           if(accommodationDto.getCategory()!=null)
-               existingAccommodation.setCategory(accommodationDto.getCategory());
-           if(accommodationDto.getNumRooms()!=null)
-               existingAccommodation.setNumRooms(accommodationDto.getNumRooms());
-           if(accommodationDto.getHost()!=null && hostService.findById(accommodationDto.getHost()).isPresent())
-               hostService.findById(accommodationDto.getHost()).get();
+           if(accommodation.getName()!=null)
+               existingAccommodation.setName(accommodation.getName());
+           if(accommodation.getCategory()!=null)
+               existingAccommodation.setCategory(accommodation.getCategory());
+           if(accommodation.getNumRooms()!=null)
+               existingAccommodation.setNumRooms(accommodation.getNumRooms());
+           if(accommodation.getHost()!=null && hostService.findById(accommodation.getHost().getId()).isPresent())
+               hostService.findById(accommodation.getHost().getId()).get();
            return accommodationRepository.save(existingAccommodation);
         });
     }

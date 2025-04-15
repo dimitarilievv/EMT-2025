@@ -1,10 +1,7 @@
 package mk.ukim.finki.lab1b.web;
 
-import mk.ukim.finki.lab1b.model.Accommodation;
-import mk.ukim.finki.lab1b.model.Host;
-import mk.ukim.finki.lab1b.model.dto.AccommodationDto;
-import mk.ukim.finki.lab1b.model.dto.HostDto;
-import mk.ukim.finki.lab1b.service.AccommodationService;
+import mk.ukim.finki.lab1b.model.domain.Accommodation;
+import mk.ukim.finki.lab1b.service.domain.AccommodationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

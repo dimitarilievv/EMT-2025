@@ -1,10 +1,9 @@
 package mk.ukim.finki.lab1b.config;
 
 import jakarta.annotation.PostConstruct;
-import mk.ukim.finki.lab1b.model.Category;
-import mk.ukim.finki.lab1b.model.Country;
-import mk.ukim.finki.lab1b.model.Host;
-import mk.ukim.finki.lab1b.model.dto.AccommodationDto;
+import mk.ukim.finki.lab1b.model.enumerations.Category;
+import mk.ukim.finki.lab1b.model.domain.Country;
+import mk.ukim.finki.lab1b.model.domain.Host;
 import mk.ukim.finki.lab1b.repository.CountryRepository;
 import mk.ukim.finki.lab1b.repository.HostRepository;
 import mk.ukim.finki.lab1b.web.AccommodationController;

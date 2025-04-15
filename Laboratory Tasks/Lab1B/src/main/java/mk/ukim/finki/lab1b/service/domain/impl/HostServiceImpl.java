@@ -1,10 +1,9 @@
-package mk.ukim.finki.lab1b.service.impl;
+package mk.ukim.finki.lab1b.service.domain.impl;
 
-import mk.ukim.finki.lab1b.model.Host;
-import mk.ukim.finki.lab1b.model.dto.HostDto;
+import mk.ukim.finki.lab1b.model.domain.Host;
 import mk.ukim.finki.lab1b.repository.HostRepository;
-import mk.ukim.finki.lab1b.service.CountryService;
-import mk.ukim.finki.lab1b.service.HostService;
+import mk.ukim.finki.lab1b.service.domain.CountryService;
+import mk.ukim.finki.lab1b.service.domain.HostService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,26 +30,26 @@ public class HostServiceImpl implements HostService {
     }
 
     @Override
-    public Optional<Host> save(HostDto hostDto) {
-        if(hostDto.getName()!=null && hostDto.getSurname()!=null
-        && countryService.findById(hostDto.getCountry()).isPresent()){
+    public Optional<Host> save(Host host) {
+        if(host.getName()!=null && host.getSurname()!=null
+        && countryService.findById(host.getCountry().getId()).isPresent()){
             return Optional.of(hostRepository.save(new Host(
-                    hostDto.getName(),
-                    hostDto.getSurname(),
-                    countryService.findById(hostDto.getCountry()).get())));
+                    host.getName(),
+                    host.getSurname(),
+                    countryService.findById(host.getCountry().getId()).get())));
         }
         return Optional.empty();
     }
 
     @Override
-    public Optional<Host> update(Long id, HostDto hostDto) {
+    public Optional<Host> update(Long id, Host host) {
         return hostRepository.findById(id).map(existingHost->{
-            if(hostDto.getName()!=null)
-                existingHost.setName(hostDto.getName());
-            if(hostDto.getSurname()!=null)
-                existingHost.setSurname(hostDto.getSurname());
-            if(hostDto.getCountry()!=null && countryService.findById(hostDto.getCountry()).isPresent())
-                existingHost.setCountry(countryService.findById(hostDto.getCountry()).get());
+            if(host.getName()!=null)
+                existingHost.setName(host.getName());
+            if(host.getSurname()!=null)
+                existingHost.setSurname(host.getSurname());
+            if(host.getCountry()!=null && countryService.findById(host.getCountry().getId()).isPresent())
+                existingHost.setCountry(countryService.findById(host.getCountry().getId()).get());
             return hostRepository.save(existingHost);
         });
     }

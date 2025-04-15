@@ -1,8 +1,7 @@
 package mk.ukim.finki.lab1b.web;
 
-import mk.ukim.finki.lab1b.model.Host;
-import mk.ukim.finki.lab1b.model.dto.HostDto;
-import mk.ukim.finki.lab1b.service.HostService;
+import mk.ukim.finki.lab1b.model.domain.Host;
+import mk.ukim.finki.lab1b.service.domain.HostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

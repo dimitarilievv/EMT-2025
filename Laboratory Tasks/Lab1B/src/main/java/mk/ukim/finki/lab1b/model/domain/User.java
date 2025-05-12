@@ -15,6 +15,19 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "shop_users")
+@NamedEntityGraph(
+        name = "User.withoutTemporaryReservations",
+        attributeNodes = {
+                @NamedAttributeNode("username"),
+                @NamedAttributeNode("name"),
+                @NamedAttributeNode("surname"),
+                @NamedAttributeNode("isAccountNonExpired"),
+                @NamedAttributeNode("isAccountNonLocked"),
+                @NamedAttributeNode("isCredentialsNonExpired"),
+                @NamedAttributeNode("isEnabled"),
+                @NamedAttributeNode("role")
+        }
+)
 public class User implements UserDetails {
     @Id
     private String username;

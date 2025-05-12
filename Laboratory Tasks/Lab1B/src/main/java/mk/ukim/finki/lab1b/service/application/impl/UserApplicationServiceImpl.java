@@ -1,11 +1,9 @@
 package mk.ukim.finki.lab1b.service.application.impl;
 
-import mk.ukim.finki.lab1b.dto.CreateUserDto;
-import mk.ukim.finki.lab1b.dto.DisplayAccommodationDto;
-import mk.ukim.finki.lab1b.dto.DisplayUserDto;
-import mk.ukim.finki.lab1b.dto.LoginUserDto;
+import mk.ukim.finki.lab1b.dto.*;
 import mk.ukim.finki.lab1b.model.domain.Accommodation;
 import mk.ukim.finki.lab1b.model.domain.User;
+import mk.ukim.finki.lab1b.security.JwtHelper;
 import mk.ukim.finki.lab1b.service.application.UserApplicationService;
 import mk.ukim.finki.lab1b.service.domain.UserService;
 import org.springframework.stereotype.Service;
@@ -17,9 +15,10 @@ import java.util.stream.Collectors;
 @Service
 public class UserApplicationServiceImpl implements UserApplicationService {
     private final UserService userService;
-
-    public UserApplicationServiceImpl(UserService userService) {
+    private final JwtHelper jwtHelper;
+    public UserApplicationServiceImpl(UserService userService, JwtHelper jwtHelper) {
         this.userService = userService;
+        this.jwtHelper = jwtHelper;
     }
     @Override
     public Optional<DisplayUserDto> register(CreateUserDto createUserDto) {
@@ -35,11 +34,16 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     }
 
     @Override
-    public Optional<DisplayUserDto> login(LoginUserDto loginUserDto) {
-        return Optional.of(DisplayUserDto.from(userService.login(
+    public Optional<LoginResponseDto> login(LoginUserDto loginUserDto) {
+        User user = userService.login(
+
                 loginUserDto.username(),
                 loginUserDto.password()
-        )));
+        );
+
+        String token = jwtHelper.generateToken(user);
+
+        return Optional.of(new LoginResponseDto(token));
     }
 
     @Override

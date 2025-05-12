@@ -1,6 +1,8 @@
 package mk.ukim.finki.lab1b.service.domain.impl;
 
 import mk.ukim.finki.lab1b.model.domain.Host;
+import mk.ukim.finki.lab1b.projections.HostByCountry;
+import mk.ukim.finki.lab1b.projections.HostNameProjection;
 import mk.ukim.finki.lab1b.repository.HostRepository;
 import mk.ukim.finki.lab1b.service.domain.CountryService;
 import mk.ukim.finki.lab1b.service.domain.HostService;
@@ -59,5 +61,14 @@ public class HostServiceImpl implements HostService {
         Host host=hostRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("Host not found with id"+id));
         hostRepository.delete(host);
+    }
+    @Override
+    public List<HostByCountry> getHostCountByCountry() {
+        return hostRepository.getHostCountByCountry();
+    }
+
+    @Override
+    public List<HostNameProjection> getAllHostNames() {
+        return hostRepository.findAllHostNames();
     }
 }

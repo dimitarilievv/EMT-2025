@@ -5,15 +5,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import mk.ukim.finki.lab1b.dto.CreateUserDto;
-import mk.ukim.finki.lab1b.dto.DisplayAccommodationDto;
-import mk.ukim.finki.lab1b.dto.DisplayUserDto;
-import mk.ukim.finki.lab1b.dto.LoginUserDto;
+import mk.ukim.finki.lab1b.dto.*;
 import mk.ukim.finki.lab1b.model.exceptions.InvalidArgumentsException;
 import mk.ukim.finki.lab1b.model.exceptions.InvalidUserCredentialsException;
 import mk.ukim.finki.lab1b.model.exceptions.PasswordsDoNotMatchException;
 import mk.ukim.finki.lab1b.service.application.UserApplicationService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,41 +55,41 @@ public class UserController {
             ), @ApiResponse(responseCode = "404", description = "Invalid username or password")}
     )
     @PostMapping("/login")
-    public ResponseEntity<DisplayUserDto> login(HttpServletRequest request) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginUserDto loginUserDto) {
         try {
-            DisplayUserDto displayUserDto = userApplicationService.login(
-                    new LoginUserDto(request.getParameter("username"), request.getParameter("password"))
-            ).orElseThrow(InvalidUserCredentialsException::new);
-
-            request.getSession().setAttribute("user", displayUserDto.toUser());
-            return ResponseEntity.ok(displayUserDto);
+            return userApplicationService.login(loginUserDto)
+                    .map(ResponseEntity::ok)
+                    .orElseThrow(RuntimeException::new);
         } catch (InvalidUserCredentialsException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @Operation(summary = "User logout", description = "Ends the user's session")
-    @ApiResponse(responseCode = "200", description = "User logged out successfully")
-    @GetMapping("/logout")
-    public void logout(HttpServletRequest request) {
-        request.getSession().invalidate();
-    }
+//    @Operation(summary = "User logout", description = "Ends the user's session")
+//    @ApiResponse(responseCode = "200", description = "User logged out successfully")
+//    @GetMapping("/logout")
+//    public void logout(HttpServletRequest request) {
+//        request.getSession().invalidate();
+//    }
 
     @Operation(summary = "My temporary reservations", description = "Shows the list of reservations in temporary reservation list")
     @GetMapping("/temporary_list/{username}")
-    public List<DisplayAccommodationDto> getUserTempList(@PathVariable String username){
+    public List<DisplayAccommodationDto> getUserTempList(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userApplicationService.getUserTempList(username);
     }
 
     @Operation(summary = "Add reservation to temporary list", description = "Adds a reservation in temporary reservation list")
     @PostMapping("/add_to_templist/{username}")
-    public List<DisplayAccommodationDto> addReservationToTempList(@PathVariable String username,@RequestBody Long accommodationId){
+    public List<DisplayAccommodationDto> addReservationToTempList(@RequestBody Long accommodationId){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userApplicationService.addAccommodationToTempList(username,accommodationId);
     }
 
     @Operation(summary = "My temporary list", description = "Shows the list of accommodations in temp list")
     @GetMapping("/rent_templist/{username}")
-    public List<DisplayAccommodationDto> rentAllWishList(@PathVariable String username){
+    public List<DisplayAccommodationDto> rentAllWishList(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userApplicationService.rentAllAccommodationsFromTempList(username);
     }
 }

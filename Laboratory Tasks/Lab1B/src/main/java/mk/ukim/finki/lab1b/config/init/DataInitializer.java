@@ -1,4 +1,4 @@
-package mk.ukim.finki.lab1b.config;
+package mk.ukim.finki.lab1b.config.init;
 
 import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.lab1b.dto.CreateAccommodationDto;
@@ -30,14 +30,14 @@ public class DataInitializer {
     }
     @PostConstruct
     public void init() {
-        Country c1=countryRepository.save(new Country("Macedonia","Europe"));
-        Country c2= countryRepository.save(new Country("Japan","Asia"));
-
-        Host h1= hostRepository.save(new Host("Dimitar","Iliev",c1));
-        Host h2=hostRepository.save(new Host("Mila","Ilieva",c2));
-
-        accommodationController.save(new CreateAccommodationDto("Family", Category.APARTMENT,h1,4));
-        accommodationController.save(new CreateAccommodationDto("Solo", Category.FLAT,h2,1));
+//        Country c1=countryRepository.save(new Country("Macedonia","Europe"));
+//        Country c2= countryRepository.save(new Country("Japan","Asia"));
+//
+//        Host h1= hostRepository.save(new Host("Dimitar","Iliev",c1));
+//        Host h2=hostRepository.save(new Host("Mila","Ilieva",c2));
+//
+//        accommodationController.save(new CreateAccommodationDto("Family", Category.APARTMENT,h1,4));
+//        accommodationController.save(new CreateAccommodationDto("Solo", Category.FLAT,h2,1));
         userRepository.save(new User(
                 "us",
                 passwordEncoder.encode("us"),

@@ -61,6 +61,7 @@ public class BookCopyServiceImpl implements BookCopyService {
     public Optional<BookCopy> returnBook(Long id) {
         BookCopy bookCopy=bookCopyRepository.findById(id).get();
         bookCopy.setIsRented(false);
+        bookCopyRepository.save(bookCopy);
         return Optional.of(bookCopy);
     }
 

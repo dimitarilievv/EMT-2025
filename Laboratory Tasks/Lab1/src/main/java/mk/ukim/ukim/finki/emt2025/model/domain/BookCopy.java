@@ -6,6 +6,7 @@ import mk.ukim.ukim.finki.emt2025.model.enumerations.Condition;
 
 @Data
 @Entity
+@Table(name = "book_copy")
 public class BookCopy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

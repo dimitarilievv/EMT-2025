@@ -3,14 +3,16 @@ package mk.ukim.ukim.finki.emt2025.web;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mk.ukim.ukim.finki.emt2025.dto.DisplayBookHistoryDto;
-import mk.ukim.ukim.finki.emt2025.model.domain.Book;
 import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
 import mk.ukim.ukim.finki.emt2025.model.enumerations.Condition;
 import mk.ukim.ukim.finki.emt2025.dto.CreateBookDto;
 import mk.ukim.ukim.finki.emt2025.dto.DisplayBookCopyDto;
 import mk.ukim.ukim.finki.emt2025.dto.DisplayBookDto;
+import mk.ukim.ukim.finki.emt2025.projections.AuthorByCountry;
+import mk.ukim.ukim.finki.emt2025.service.application.AuthorApplicationService;
 import mk.ukim.ukim.finki.emt2025.service.application.BookApplicationService;
 import mk.ukim.ukim.finki.emt2025.service.application.BookCopyApplicationService;
+import mk.ukim.ukim.finki.emt2025.service.domain.AuthorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +25,12 @@ import java.util.List;
 public class BookController {
     private final BookApplicationService bookApplicationService;
     private final BookCopyApplicationService bookCopyApplicationService;
+    private final AuthorService authorService;
 
-    public BookController(BookApplicationService bookApplicationService, BookCopyApplicationService bookCopyApplicationService) {
+    public BookController(BookApplicationService bookApplicationService, BookCopyApplicationService bookCopyApplicationService, AuthorService authorService) {
         this.bookApplicationService = bookApplicationService;
         this.bookCopyApplicationService = bookCopyApplicationService;
+        this.authorService = authorService;
     }
 
     @Operation(summary = "Get all books", description = "Retrieves a list of all books.")
@@ -121,6 +125,7 @@ public class BookController {
     public List<DisplayBookHistoryDto> getAllVersions(@PathVariable Long id) {
        return this.bookApplicationService.findAllVersions(id);
     }
+
 
 }
 

@@ -3,6 +3,8 @@ package mk.ukim.ukim.finki.emt2025.service.domain.impl;
 import mk.ukim.ukim.finki.emt2025.model.domain.Book;
 import mk.ukim.ukim.finki.emt2025.model.domain.BookHistory;
 import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
+import mk.ukim.ukim.finki.emt2025.projections.AuthorByCountry;
+import mk.ukim.ukim.finki.emt2025.repository.AuthorRepository;
 import mk.ukim.ukim.finki.emt2025.repository.BookRepository;
 import mk.ukim.ukim.finki.emt2025.service.domain.AuthorService;
 import mk.ukim.ukim.finki.emt2025.service.domain.BookService;
@@ -16,10 +18,12 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final AuthorService authorService;
+    private final AuthorRepository authorRepository;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorService authorService) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorService authorService, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -110,5 +114,7 @@ public class BookServiceImpl implements BookService {
     public List<BookHistory> findAllVersions(Long id) {
         return bookRepository.findById(id).get().getBookHistory();
     }
+
+
 
 }

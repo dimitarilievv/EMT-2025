@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserApplicationService {
     Optional<DisplayUserDto> register(CreateUserDto createUserDto);
 
-    Optional<DisplayUserDto> login(LoginUserDto loginUserDto);
+    Optional<LoginResponseDto> login(LoginUserDto loginUserDto);
 
     Optional<DisplayUserDto> findByUsername(String username);
     List<DisplayBookDto> addBookToWishlist(String username, Long bookId);

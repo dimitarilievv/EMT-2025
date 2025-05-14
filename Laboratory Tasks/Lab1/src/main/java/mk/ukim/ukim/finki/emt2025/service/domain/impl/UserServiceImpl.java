@@ -1,5 +1,6 @@
 package mk.ukim.ukim.finki.emt2025.service.domain.impl;
 
+import mk.ukim.ukim.finki.emt2025.dto.LoginResponseDto;
 import mk.ukim.ukim.finki.emt2025.model.domain.Book;
 import mk.ukim.ukim.finki.emt2025.model.domain.BookCopy;
 import mk.ukim.ukim.finki.emt2025.model.domain.User;
@@ -16,12 +17,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final BookService bookService;
     private final BookCopyService bookCopyService;
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, BookService bookService, BookCopyService bookCopyService) {
@@ -47,8 +48,11 @@ public class UserServiceImpl implements UserService {
         if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
             throw new InvalidArgumentsException();
         }
-        return userRepository.findByUsernameAndPassword(username, password).orElseThrow(
-                InvalidUserCredentialsException::new);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException(username + " not found"));
+        if (!passwordEncoder.matches(password, user.getPassword()))
+            throw new RuntimeException("Passwords do not match");
+        return user;
     }
 
     @Override

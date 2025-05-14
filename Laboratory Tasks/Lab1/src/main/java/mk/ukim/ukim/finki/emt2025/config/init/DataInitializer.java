@@ -1,4 +1,4 @@
-package mk.ukim.ukim.finki.emt2025.config;
+package mk.ukim.ukim.finki.emt2025.config.init;
 
 import jakarta.annotation.PostConstruct;
 import mk.ukim.ukim.finki.emt2025.model.domain.Author;
@@ -31,14 +31,14 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
-        Country c1=countryRepository.save(new Country("Macedonia","Europe"));
-        Country c2= countryRepository.save(new Country("Japan","Asia"));
-
-        Author a1= authorRepository.save(new Author("Dimitar","Iliev",c1));
-        Author a2=authorRepository.save(new Author("Mila","Ilieva",c2));
-
-        bookRepository.save(new Book("Book 1", Category.CLASSICS,a1));
-        bookRepository.save(new Book("Book 2", Category.BIOGRAPHY,a2));
+//        Country c1=countryRepository.save(new Country("Macedonia","Europe"));
+//        Country c2= countryRepository.save(new Country("Japan","Asia"));
+//
+//        Author a1= authorRepository.save(new Author("Dimitar","Iliev",c1));
+//        Author a2=authorRepository.save(new Author("Mila","Ilieva",c2));
+//
+//        bookRepository.save(new Book("Book 1", Category.CLASSICS,a1));
+//        bookRepository.save(new Book("Book 2", Category.BIOGRAPHY,a2));
 
         userRepository.save(new User(
                 "di",

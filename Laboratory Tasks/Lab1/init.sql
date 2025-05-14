@@ -1,3 +1,8 @@
+CREATE TYPE role_enum AS ENUM ('ROLE_USER', 'ROLE_HOST');
+CREATE TYPE book_copy_condition_enum AS ENUM ('GOOD', 'BAD');
+CREATE TYPE category_book_enum
+AS ENUM ('NOVEL', 'THRILER', 'HISTORY', 'FANTASY', 'BIOGRAPHY', 'CLASSICS', 'DRAMA');
+
 CREATE TABLE country
 (
     id        SERIAL PRIMARY KEY,
@@ -10,34 +15,32 @@ CREATE TABLE author
     id         SERIAL PRIMARY KEY,
     name       VARCHAR(255) NOT NULL,
     surname    VARCHAR(255) NOT NULL,
-    country_id INT REFERENCES country (id)
+    country_id BIGINT,
+    CONSTRAINT fk_author_country
+        FOREIGN KEY (country_id)
+            REFERENCES country (id)
 );
+
 
 CREATE TABLE book
 (
     id        SERIAL PRIMARY KEY,
-    name      VARCHAR(255) NOT NULL,
-    category  VARCHAR(50)  NOT NULL,
-    author_id INT REFERENCES author (id)
-);
-
-CREATE TABLE book_history
-(
-    id        SERIAL PRIMARY KEY,
-    name      VARCHAR(255) NOT NULL,
-    category  VARCHAR(50)  NOT NULL,
-    author_id INT REFERENCES author (id)
+    name      VARCHAR(255)       NOT NULL,
+    category  category_book_enum NOT NULL,
+    author_id BIGINT,
+    CONSTRAINT fk_book_author FOREIGN KEY (author_id) REFERENCES author (id)
 );
 
 CREATE TABLE book_copy
 (
     id        SERIAL PRIMARY KEY,
-    is_rented BOOLEAN DEFAULT FALSE,
-    condition VARCHAR(50),
-    book_id   INT REFERENCES book (id)
+    isRented  BOOLEAN,
+    condition book_copy_condition_enum NOT NULL,
+    book_id   BIGINT,
+    CONSTRAINT fk_book_copy_book FOREIGN KEY (book_id) REFERENCES book (id)
 );
 
-CREATE TABLE shop_users
+CREATE TABLE book_users
 (
     username                   VARCHAR(255) PRIMARY KEY,
     password                   VARCHAR(255) NOT NULL,
@@ -47,12 +50,21 @@ CREATE TABLE shop_users
     is_account_non_locked      BOOLEAN DEFAULT TRUE,
     is_credentials_non_expired BOOLEAN DEFAULT TRUE,
     is_enabled                 BOOLEAN DEFAULT TRUE,
-    role                       VARCHAR(50)  NOT NULL
+    role                       role_enum    NOT NULL
 );
-
-CREATE TABLE shop_users_wish_list_books
+CREATE TABLE user_wishlist_books
 (
-    shop_users_username VARCHAR(255) REFERENCES shop_users (username),
-    wish_list_books_id  INT REFERENCES book (id),
-    PRIMARY KEY (shop_users_username, wish_list_books_id)
+    book_users_username VARCHAR(255) NOT NULL,
+    book_id             BIGINT       NOT NULL,
+    PRIMARY KEY (book_users_username, book_id),
+    CONSTRAINT fk_user_wishlist FOREIGN KEY (book_users_username) REFERENCES book_users (username),
+    CONSTRAINT fk_book_wishlist FOREIGN KEY (book_id) REFERENCES book (id)
+);
+CREATE TABLE book_history
+(
+    id        SERIAL PRIMARY KEY,
+    name      VARCHAR(255)       NOT NULL,
+    category  category_book_enum NOT NULL,
+    author_id BIGINT,
+    CONSTRAINT fk_book_history_author FOREIGN KEY (author_id) REFERENCES author (id)
 );

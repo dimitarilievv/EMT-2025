@@ -5,6 +5,7 @@ import mk.ukim.ukim.finki.emt2025.dto.DisplayBookDto;
 import mk.ukim.ukim.finki.emt2025.dto.DisplayBookHistoryDto;
 import mk.ukim.ukim.finki.emt2025.model.domain.Book;
 import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
+import mk.ukim.ukim.finki.emt2025.projections.AuthorByCountry;
 import mk.ukim.ukim.finki.emt2025.service.application.BookApplicationService;
 import mk.ukim.ukim.finki.emt2025.service.domain.AuthorService;
 import mk.ukim.ukim.finki.emt2025.service.domain.BookService;
@@ -92,4 +93,7 @@ public class BookApplicationServiceImpl implements BookApplicationService {
                 .map(DisplayBookHistoryDto::from)
                 .collect(Collectors.toList());
     }
+
+
+
 }

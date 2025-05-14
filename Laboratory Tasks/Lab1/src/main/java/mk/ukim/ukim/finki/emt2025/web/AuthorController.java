@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mk.ukim.ukim.finki.emt2025.dto.CreateAuthorDto;
 import mk.ukim.ukim.finki.emt2025.dto.DisplayAuthorDto;
+import mk.ukim.ukim.finki.emt2025.projections.AuthorByCountry;
+import mk.ukim.ukim.finki.emt2025.projections.AuthorNamesProjection;
 import mk.ukim.ukim.finki.emt2025.service.application.AuthorApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -68,5 +70,12 @@ public class AuthorController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    @GetMapping("/by-country")
+    public List<AuthorByCountry> getAuthorCountByCountry() {
+        return authorApplicationService.getAuthorCountByCountry();
+    }
+    @GetMapping("/api/authors/names")
+    public List<AuthorNamesProjection> getAllHostNames() {
+        return authorApplicationService.getAllHostNames();
+    }
 }

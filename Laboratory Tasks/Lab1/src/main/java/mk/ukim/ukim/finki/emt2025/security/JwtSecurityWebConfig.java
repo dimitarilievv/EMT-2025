@@ -31,9 +31,11 @@ public class JwtSecurityWebConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8181"));
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:8181"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
@@ -44,32 +46,33 @@ public class JwtSecurityWebConfig {
         http
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .authorizeRequests()
-                .requestMatchers(
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/api-docs/**",
-                        "/swagger-resources/**",
-                        "/webjars/**",
-                        "/api/user/login",
-                        "/api/user/register"
-                ).permitAll()
-                .requestMatchers(
-                        "/api/books/by-author",
-                        "/api/authors/by-country",
-                        "/api/authors/names",
-                        "/authors/add",
-                        "/authors/edit/*",
-                        "/authors/delete/*"
-                ).hasAnyAuthority("ROLE_USER", "ROLE_LIBRARIAN")
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement(sessionManagementConfigurer ->
-                        sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeRequests(auth -> auth
+                                .anyRequest().permitAll());
+//                .requestMatchers(
+//                        "/swagger-ui/**",
+//                        "/v3/api-docs/**",
+//                        "/api-docs/**",
+//                        "/swagger-resources/**",
+//                        "/webjars/**",
+//                        "/user/login",
+//                        "/user/register"
+//                ).permitAll()
+//                .requestMatchers(
+//                        "/books/by-author",
+//                        "/authors/by-country",
+//                        "/authors/names",
+//                        "/authors/add",
+//                        "/authors/edit/*",
+//                        "/authors/delete/*"
+//                ).hasAnyAuthority("ROLE_USER", "ROLE_LIBRARIAN")
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                .sessionManagement(sessionManagementConfigurer ->
+//                        sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                )
+//                .authenticationProvider(authenticationProvider)
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

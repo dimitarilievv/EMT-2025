@@ -29,13 +29,18 @@ public class AuthorServiceImpl implements AuthorService {
     }
     @Override
     public Optional<Author> save(Author author) {
-        if (author.getName() != null && author.getSurname() != null
-                && countryRepository.findById(author.getCountry().getId()).isPresent()) {
-            return Optional.of(authorRepository.save(new Author(author.getName(), author.getSurname(),
-                    countryRepository.findById(author.getCountry().getId()).get())));
+        if (author.getName() != null && author.getSurname() != null && author.getCountry() != null) {
+            Long countryId = author.getCountry().getId();
+            return countryRepository.findById(countryId)
+                    .map(country -> {
+                        Author newAuthor = new Author(author.getName(), author.getSurname(), country);
+                        return Optional.of(authorRepository.save(newAuthor));
+                    })
+                    .orElse(Optional.empty());
         }
         return Optional.empty();
     }
+
 
     @Override
     public Optional<Author> update(Long id, Author author) {

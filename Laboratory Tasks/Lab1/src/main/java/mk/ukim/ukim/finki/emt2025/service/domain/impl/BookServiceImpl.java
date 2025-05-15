@@ -45,10 +45,11 @@ public class BookServiceImpl implements BookService {
             Book newBook = new Book(
                     book.getName(),
                     book.getCategory(),
-                    authorService.findById(book.getAuthor().getId()).get()
+                    book.getAuthor()
             );
 
-            newBook.getBookHistory().add(new BookHistory(book.getName(), book.getCategory(), book.getAuthor()));
+//            newBook.getBookHistory().add(new BookHistory(book.getName(), book.getCategory(), book.getAuthor()));
+            //TODO: this isn't working i need to fix this
             return Optional.of(bookRepository.save(newBook));
         }
         return Optional.empty();
@@ -59,7 +60,8 @@ public class BookServiceImpl implements BookService {
     public Optional<Book> update(Long id, Book book) {
         return bookRepository.findById(id)
                 .map(existingBook -> {
-                    existingBook.getBookHistory().add(new BookHistory(book.getName(),book.getCategory(),book.getAuthor()));
+//                    existingBook.getBookHistory().add(new BookHistory(book.getName(),book.getCategory(),book.getAuthor()));
+                    //TODO: fix this
                     if (book.getName() != null) {
                         existingBook.setName(book.getName());
                     }

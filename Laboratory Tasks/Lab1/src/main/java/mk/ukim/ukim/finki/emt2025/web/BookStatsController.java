@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/books_stats")
 public class BookStatsController {
     private final DisplayNumBooksByAuthorRepository repository;
 

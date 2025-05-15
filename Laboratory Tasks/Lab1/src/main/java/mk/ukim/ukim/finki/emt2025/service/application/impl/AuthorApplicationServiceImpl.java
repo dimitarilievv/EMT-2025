@@ -3,10 +3,12 @@ package mk.ukim.ukim.finki.emt2025.service.application.impl;
 import mk.ukim.ukim.finki.emt2025.dto.CreateAuthorDto;
 import mk.ukim.ukim.finki.emt2025.dto.DisplayAuthorDto;
 import mk.ukim.ukim.finki.emt2025.events.AuthorChangedEvent;
+import mk.ukim.ukim.finki.emt2025.model.domain.Country;
 import mk.ukim.ukim.finki.emt2025.projections.AuthorByCountry;
 import mk.ukim.ukim.finki.emt2025.projections.AuthorNamesProjection;
 import mk.ukim.ukim.finki.emt2025.service.application.AuthorApplicationService;
 import mk.ukim.ukim.finki.emt2025.service.domain.AuthorService;
+import mk.ukim.ukim.finki.emt2025.service.domain.CountryService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class AuthorApplicationServiceImpl implements AuthorApplicationService {
     private final AuthorService authorService;
+
+    private final CountryService countryService;
     private final ApplicationEventPublisher eventPublisher;
-    public AuthorApplicationServiceImpl(AuthorService authorService, ApplicationEventPublisher eventPublisher) {
+    public AuthorApplicationServiceImpl(AuthorService authorService, CountryService countryService, ApplicationEventPublisher eventPublisher) {
         this.authorService = authorService;
+        this.countryService = countryService;
         this.eventPublisher = eventPublisher;
     }
 
@@ -30,7 +35,8 @@ public class AuthorApplicationServiceImpl implements AuthorApplicationService {
 
     @Override
     public Optional<DisplayAuthorDto> save(CreateAuthorDto author) {
-        Optional<DisplayAuthorDto> saved = authorService.save(author.toAuthor())
+        Country country = countryService.findById(author.countryId()).get();
+        Optional<DisplayAuthorDto> saved = authorService.save(author.toAuthor(country))
                 .map(DisplayAuthorDto::from);
 
         saved.ifPresent(dto -> eventPublisher.publishEvent(new AuthorChangedEvent(this)));
@@ -40,7 +46,8 @@ public class AuthorApplicationServiceImpl implements AuthorApplicationService {
 
     @Override
     public Optional<DisplayAuthorDto> update(Long id, CreateAuthorDto author) {
-        Optional<DisplayAuthorDto> updated = authorService.update(id,author.toAuthor())
+        Country country=countryService.findById(author.countryId()).get();
+        Optional<DisplayAuthorDto> updated = authorService.update(id,author.toAuthor(country))
                 .map(DisplayAuthorDto::from);
 
         updated.ifPresent(dto -> eventPublisher.publishEvent(new AuthorChangedEvent(this)));

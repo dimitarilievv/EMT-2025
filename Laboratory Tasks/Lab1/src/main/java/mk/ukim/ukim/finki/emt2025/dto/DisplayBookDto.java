@@ -6,9 +6,9 @@ import mk.ukim.ukim.finki.emt2025.model.enumerations.Category;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record DisplayBookDto(Long id, String name, Category category, Long author) {
+public record DisplayBookDto(Long id, String name, Category category, DisplayAuthorDto author) {
     public static DisplayBookDto from(Book book){
-        return new DisplayBookDto(book.getId(),book.getName(),book.getCategory(),book.getAuthor().getId());
+        return new DisplayBookDto(book.getId(),book.getName(),book.getCategory(),DisplayAuthorDto.from(book.getAuthor()));
     }
 
     public static List<DisplayBookDto> from(List<Book> books){

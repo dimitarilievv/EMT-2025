@@ -53,8 +53,10 @@ public class AccommodationServiceImpl implements AccommodationService {
                existingAccommodation.setCategory(accommodation.getCategory());
            if(accommodation.getNumRooms()!=null)
                existingAccommodation.setNumRooms(accommodation.getNumRooms());
-           if(accommodation.getHost()!=null && hostService.findById(accommodation.getHost().getId()).isPresent())
-               hostService.findById(accommodation.getHost().getId()).get();
+           if(accommodation.getHost()!=null && hostService.findById(accommodation.getHost().getId()).isPresent()) {
+               Long newHostId = accommodation.getHost().getId();
+               hostService.findById(newHostId).ifPresent(existingAccommodation::setHost);
+           }
            return accommodationRepository.save(existingAccommodation);
         });
     }

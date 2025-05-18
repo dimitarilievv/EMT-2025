@@ -3,9 +3,11 @@ package mk.ukim.finki.lab1b.service.application.impl;
 import mk.ukim.finki.lab1b.dto.CreateHostDto;
 import mk.ukim.finki.lab1b.dto.DisplayHostDto;
 import mk.ukim.finki.lab1b.events.HostChangedEvent;
+import mk.ukim.finki.lab1b.model.domain.Country;
 import mk.ukim.finki.lab1b.projections.HostByCountry;
 import mk.ukim.finki.lab1b.projections.HostNameProjection;
 import mk.ukim.finki.lab1b.service.application.HostApplicationService;
+import mk.ukim.finki.lab1b.service.domain.CountryService;
 import mk.ukim.finki.lab1b.service.domain.HostService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,11 @@ import java.util.Optional;
 public class HostApplicationServiceImpl implements HostApplicationService {
     private final HostService hostService;
     private final ApplicationEventPublisher eventPublisher;
-
-    public HostApplicationServiceImpl(HostService hostService, ApplicationEventPublisher eventPublisher) {
+    private final CountryService countryService;
+    public HostApplicationServiceImpl(HostService hostService, ApplicationEventPublisher eventPublisher, CountryService countryService) {
         this.hostService = hostService;
         this.eventPublisher = eventPublisher;
+        this.countryService = countryService;
     }
 
     @Override
@@ -35,7 +38,8 @@ public class HostApplicationServiceImpl implements HostApplicationService {
 
     @Override
     public Optional<DisplayHostDto> save(CreateHostDto host) {
-        Optional<DisplayHostDto> saved = hostService.save(host.toHost())
+        Country country=countryService.findById(host.countryId()).get();
+        Optional<DisplayHostDto> saved = hostService.save(host.toHost(country))
                 .map(DisplayHostDto::from);
 
         saved.ifPresent(dto -> eventPublisher.publishEvent(new HostChangedEvent(this)));
@@ -45,7 +49,8 @@ public class HostApplicationServiceImpl implements HostApplicationService {
 
     @Override
     public Optional<DisplayHostDto> update(Long id, CreateHostDto host) {
-        Optional<DisplayHostDto> updated = hostService.update(id,host.toHost())
+        Country country=countryService.findById(host.countryId()).get();
+        Optional<DisplayHostDto> updated = hostService.update(id,host.toHost(country))
                 .map(DisplayHostDto::from);
 
         updated.ifPresent(dto -> eventPublisher.publishEvent(new HostChangedEvent(this)));

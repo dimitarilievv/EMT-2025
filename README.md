@@ -55,4 +55,4 @@ A web app for booking accommodations (hotels, apartments, etc.).
 
 ## 👨‍🎓 Author
 
-These projects were developed as part of the **Electronic and Mobile Commerce** course at the **Faculty of Computer Science and Engineering – FCSE** (2024/2025).
+These projects were developed as part of the **E-Commerce** course at the **Faculty of Computer Science and Engineering – FCSE** (2024/2025).
